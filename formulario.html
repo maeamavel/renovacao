@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Carregando...</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
+        h1 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #555; font-weight: bold; }
+        input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; font-size: 18px; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #45a049; }
+        #loading { text-align: center; display: none; margin-top: 10px; color: #555; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 id="formTitle">Carregando...</h1>
+    <form id="cadastroForm">
+        <div class="form-group">
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" required>
+        </div>
+        <button type="submit">Cadastrar</button>
+        <p id="loading" style="display: none;">Enviando...</p>
+    </form>
+</div>
+<script>
+    const appScriptURL = 'https://script.google.com/macros/s/AKfycbzsGIJKF40hxF7eTqQ0E6Bats5XcLsL2OEf9b1DMFM8YFs3-61WIHEjbuFRn4oarglOiA/exec'; 
+
+    function loadConfig() {
+        fetch(appScriptURL)
+            .then(response => response.json())
+            .then(config => {
+                document.getElementById('pageTitle').textContent = config.title;
+                document.getElementById('formTitle').textContent = config.title;
+            })
+            .catch(error => {
+                console.error('Erro ao carregar as configurações:', error);
+                document.getElementById('formTitle').textContent = 'Erro ao carregar o formulário.';
+            });
+    }
+
+    window.onload = loadConfig;
+
+    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+        const loadingText = document.getElementById('loading');
+        loadingText.style.display = 'block';
+
+        fetch(appScriptURL, {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.result === 'success') {
+                window.location.href = 'confirmacao.html?link=' + encodeURIComponent(result.whatsappLink);
+            } else {
+                loadingText.textContent = 'Erro ao enviar dados. Tente novamente.';
+                loadingText.style.color = 'red';
+            }
+        })
+        .catch(error => {
+            loadingText.textContent = 'Erro de conexão. Tente novamente.';
+            loadingText.style.color = 'red';
+        });
+    });
+</script>
+</body>
+</html>

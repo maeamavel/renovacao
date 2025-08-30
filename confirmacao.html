@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição Confirmada!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Proporção 16:9 */
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        .whatsapp-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #25D366; /* Cor verde do WhatsApp */
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Inscrição Confirmada!</h1>
+    <p>Sua inscrição para o retiro foi registrada com sucesso.</p>
+    <p>Assista ao vídeo abaixo para saber os próximos passos e, em seguida, entre no grupo de WhatsApp para receber todas as informações.</p>
+
+    <div class="video-container">
+        <iframe width="560" height="315" src="COLE_O_LINK_DO_SEU_VIDEO_AQUI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <a id="whatsappButton" href="#" target="_blank" class="whatsapp-button">
+        Entrar no Grupo do WhatsApp
+    </a>
+</div>
+
+<script>
+    // Obtém a URL atual da página
+    const urlParams = new URLSearchParams(window.location.search);
+    const whatsappLink = urlParams.get('link');
+
+    // Se o link existir na URL, atualiza o href do botão
+    if (whatsappLink) {
+        document.getElementById('whatsappButton').href = decodeURIComponent(whatsappLink);
+    }
+</script>
+
+</body>
+</html>

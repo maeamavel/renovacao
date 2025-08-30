@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificando Inscrições...</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verificando status das inscrições...</h1>
+        <p>Aguarde um momento.</p>
+    </div>
+
+    <script>
+        const appScriptURL = 'https://script.google.com/macros/s/AKfycbzsGIJKF40hxF7eTqQ0E6Bats5XcLsL2OEf9b1DMFM8YFs3-61WIHEjbuFRn4oarglOiA/exec';
+
+        window.onload = function() {
+            fetch(appScriptURL)
+                .then(response => response.json())
+                .then(data => {
+                    const status = data.status.toLowerCase();
+                    const message = data.message;
+                    
+                    if (status === 'aberto') {
+                        window.location.href = 'formulario.html';
+                    } else {
+                        window.location.href = 'fechado.html?message=' + encodeURIComponent(message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao verificar o status:', error);
+                    window.location.href = 'formulario.html'; 
+                });
+        };
+    </script>
+</body>
+</html>

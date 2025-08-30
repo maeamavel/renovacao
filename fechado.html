@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrições Encerradas</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 500px; box-sizing: border-box; }
+        h1 { color: #d9534f; margin-bottom: 20px; }
+        p { font-size: 1.2em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Inscrições Encerradas</h1>
+        <p id="message"></p>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        if (message) {
+            document.getElementById('message').textContent = decodeURIComponent(message);
+        } else {
+            document.getElementById('message').textContent = 'Atualmente não estamos recebendo inscrições.';
+        }
+    </script>
+</body>
+</html>
