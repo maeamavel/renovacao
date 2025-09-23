@@ -291,6 +291,7 @@
         // Altera dinamicamente o campo de estado
         const estadoWrapper = document.getElementById('estado-wrapper');
         const currentEstadoField = document.getElementById('estado');
+        const icon = currentEstadoField.nextElementSibling; // Salva o ícone
 
         if (nomePais === 'Brasil') {
             if (currentEstadoField.tagName !== 'SELECT') {
@@ -315,7 +316,7 @@
                 
                 estadoWrapper.innerHTML = ''; // Limpa o wrapper
                 estadoWrapper.appendChild(select);
-                estadoWrapper.appendChild(currentEstadoField.nextElementSibling); // Re-adiciona o ícone
+                if (icon) estadoWrapper.appendChild(icon); // Re-adiciona o ícone
             }
         } else {
             if (currentEstadoField.tagName !== 'INPUT') {
@@ -327,7 +328,7 @@
                 
                 estadoWrapper.innerHTML = ''; // Limpa o wrapper
                 estadoWrapper.appendChild(input);
-                estadoWrapper.appendChild(currentEstadoField.nextElementSibling); // Re-adiciona o ícone
+                if (icon) estadoWrapper.appendChild(icon); // Re-adiciona o ícone
             }
         }
     });
