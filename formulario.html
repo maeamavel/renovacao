@@ -50,12 +50,17 @@
         }
         .form-group {
             margin-bottom: 20px;
-            position: relative;
         }
-        .form-group i {
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper i {
             position: absolute;
             left: 15px;
-            top: 42px; /* Ajustado para alinhar com o campo */
+            top: 50%;
+            transform: translateY(-50%);
             color: #adb5bd;
             transition: color 0.3s;
         }
@@ -68,20 +73,21 @@
         }
         input[type="text"], input[type="email"], input[type="tel"], select {
             width: 100%;
-            padding: 12px 15px 12px 45px; /* Adicionado padding à esquerda para o ícone */
+            padding: 12px 15px 12px 45px;
             border: 1px solid #dfe6e9;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
             font-family: 'Poppins', sans-serif;
             transition: border-color 0.3s, box-shadow 0.3s;
+            line-height: normal;
         }
         input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus {
             outline: none;
             border-color: #27ae60;
             box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
         }
-        input[type="text"]:focus + i, input[type="email"]:focus + i, input[type="tel"]:focus + i, select:focus + i {
+        input[type="text"]:focus ~ i, input[type="email"]:focus ~ i, input[type="tel"]:focus ~ i, select:focus ~ i {
             color: #27ae60;
         }
         .consentimento {
@@ -91,6 +97,7 @@
         }
         .consentimento input {
             width: auto;
+            padding-left: 0; /* Remover padding para radio buttons */
         }
         .consentimento label {
             font-weight: 400;
@@ -160,41 +167,55 @@
     <form id="cadastroForm">
         <div class="form-group">
             <label for="nome">Nome Completo:</label>
-            <input type="text" id="nome" name="nome" required>
-            <i class="fa-solid fa-user"></i>
+            <div class="input-wrapper">
+                <input type="text" id="nome" name="nome" required>
+                <i class="fa-solid fa-user"></i>
+            </div>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <i class="fa-solid fa-envelope"></i>
+            <div class="input-wrapper">
+                <input type="email" id="email" name="email" required>
+                <i class="fa-solid fa-envelope"></i>
+            </div>
         </div>
 	<div class="form-group">
             <label for="pais">País:</label>
-            <select id="pais" name="pais" required>
-                <option value="">Selecione um país</option>
-            </select>
-            <i class="fa-solid fa-flag"></i>
+            <div class="input-wrapper">
+                <select id="pais" name="pais" required>
+                    <option value="">Selecione um país</option>
+                </select>
+                <i class="fa-solid fa-flag"></i>
+            </div>
         </div>
         <div class="form-group">
             <label for="estado">Em qual estado/distrito você mora?</label>
-            <input type="text" id="estado" name="estado" required>
-            <i class="fa-solid fa-map-location-dot"></i>
+            <div class="input-wrapper" id="estado-wrapper">
+                <input type="text" id="estado" name="estado" required>
+                <i class="fa-solid fa-map-location-dot"></i>
+            </div>
         </div>
         <div class="form-group">
             <label for="cidade">Cidade:</label>
-            <input type="text" id="cidade" name="cidade" required>
-            <i class="fa-solid fa-city"></i>
+            <div class="input-wrapper">
+                <input type="text" id="cidade" name="cidade" required>
+                <i class="fa-solid fa-city"></i>
+            </div>
         </div>
         <div class="form-group">
             <label for="telefone">Telefone/Whatsapp:</label>
-            <input type="tel" id="telefone" name="telefone" required>
-            <i class="fa-solid fa-phone"></i>
+            <div class="input-wrapper">
+                <input type="tel" id="telefone" name="telefone" required>
+                <i class="fa-solid fa-phone"></i>
+            </div>
             <div id="telefoneValidation" class="validation-message" style="display: none;"></div>
         </div>
         <div class="form-group">
             <label for="anoConsagracao">Caso se lembre, qual foi o ano que se Consagrou a Maria?</label>
-            <input type="text" id="anoConsagracao" name="anoConsagracao" placeholder="Ex: 2015">
-            <i class="fa-solid fa-calendar-check"></i>
+            <div class="input-wrapper">
+                <input type="text" id="anoConsagracao" name="anoConsagracao" placeholder="Ex: 2015">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
         </div>
         <div class="form-group">
             <label>Confirma seu interesse em fazer o Retiro?</label>
@@ -268,7 +289,7 @@
         }
 
         // Altera dinamicamente o campo de estado
-        const estadoWrapper = document.getElementById('estado').parentNode;
+        const estadoWrapper = document.getElementById('estado-wrapper');
         const currentEstadoField = document.getElementById('estado');
 
         if (nomePais === 'Brasil') {
@@ -291,8 +312,10 @@
                     option.textContent = estado;
                     select.appendChild(option);
                 });
-
-                estadoWrapper.replaceChild(select, currentEstadoField);
+                
+                estadoWrapper.innerHTML = ''; // Limpa o wrapper
+                estadoWrapper.appendChild(select);
+                estadoWrapper.appendChild(currentEstadoField.nextElementSibling); // Re-adiciona o ícone
             }
         } else {
             if (currentEstadoField.tagName !== 'INPUT') {
@@ -302,7 +325,9 @@
                 input.name = 'estado';
                 input.required = true;
                 
-                estadoWrapper.replaceChild(input, currentEstadoField);
+                estadoWrapper.innerHTML = ''; // Limpa o wrapper
+                estadoWrapper.appendChild(input);
+                estadoWrapper.appendChild(currentEstadoField.nextElementSibling); // Re-adiciona o ícone
             }
         }
     });
