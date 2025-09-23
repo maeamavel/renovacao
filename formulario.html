@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">Carregando...</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa; /* Azul claro */
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f9fc;
+            background-image: linear-gradient(to right top, #e0f7fa, #f7f9fc);
             display: flex;
-	    flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -17,47 +20,69 @@
             padding: 20px;
             box-sizing: border-box;
         }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+            width: 100%;
+            max-width: 550px;
+            box-sizing: border-box;
+        }
         .header-image {
             width: 100%;
             height: auto;
             display: block;
-            margin-bottom: 20px;
-            max-width: 800px; /* Aumentado para corresponder à largura do contêiner */
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
+            margin-bottom: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            box-sizing: border-box;
         }
         h1 {
             text-align: center;
-            color: #333;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
         .observacao {
             text-align: center;
             color: #555;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
         }
         .form-group {
             margin-bottom: 20px;
+            position: relative;
+        }
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 42px; /* Ajustado para alinhar com o campo */
+            color: #adb5bd;
+            transition: color 0.3s;
         }
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
-            font-weight: bold;
+            color: #34495e;
+            font-weight: 500;
+            font-size: 0.9em;
         }
         input[type="text"], input[type="email"], input[type="tel"], select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 15px 12px 45px; /* Adicionado padding à esquerda para o ícone */
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus {
+            outline: none;
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+        input[type="text"]:focus + i, input[type="email"]:focus + i, input[type="tel"]:focus + i, select:focus + i {
+            color: #27ae60;
         }
         .consentimento {
             display: flex;
@@ -68,21 +93,27 @@
             width: auto;
         }
         .consentimento label {
-            display: inline;
+            font-weight: 400;
+            font-size: 0.9em;
         }
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
+            padding: 14px;
+            background-color: #27ae60;
+            background-image: linear-gradient(to right, #27ae60, #2ecc71);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 18px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
         button:hover {
-            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
         }
         #loading {
             text-align: center;
@@ -91,7 +122,7 @@
             color: #555;
         }
         .validation-message {
-            color: red;
+            color: #e74c3c;
             font-size: 0.9em;
             margin-top: 5px;
         }
@@ -100,48 +131,73 @@
             color: #666;
             margin-top: 20px;
             margin-bottom: 10px;
+            font-size: 0.85em;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Proporção 16:9 */
+            height: 0;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
-<img class="header-image" id="headerImage" src="" alt="Imagem de cabeçalho" style="display: none;">
 <div class="container">
+    <img id="headerImage" class="header-image" src="" alt="Imagem de cabeçalho">
     <h1 id="formTitle">Carregando...</h1>
     <p id="observacao" class="observacao"></p>
     <form id="cadastroForm">
         <div class="form-group">
             <label for="nome">Nome Completo:</label>
             <input type="text" id="nome" name="nome" required>
+            <i class="fa-solid fa-user"></i>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
+            <i class="fa-solid fa-envelope"></i>
         </div>
 	<div class="form-group">
             <label for="pais">País:</label>
             <select id="pais" name="pais" required>
                 <option value="">Selecione um país</option>
             </select>
+            <i class="fa-solid fa-flag"></i>
         </div>
         <div class="form-group">
             <label for="estado">Em qual estado/distrito você mora?</label>
             <input type="text" id="estado" name="estado" required>
+            <i class="fa-solid fa-map-location-dot"></i>
         </div>
         <div class="form-group">
             <label for="cidade">Cidade:</label>
             <input type="text" id="cidade" name="cidade" required>
+            <i class="fa-solid fa-city"></i>
         </div>
         <div class="form-group">
-            <label for="telefone">Telefone Celular:</label>
+            <label for="telefone">Telefone/Whatsapp:</label>
             <input type="tel" id="telefone" name="telefone" required>
+            <i class="fa-solid fa-phone"></i>
             <div id="telefoneValidation" class="validation-message" style="display: none;"></div>
         </div>
         <div class="form-group">
             <label for="anoConsagracao">Caso se lembre, qual foi o ano que se Consagrou a Maria?</label>
             <input type="text" id="anoConsagracao" name="anoConsagracao" placeholder="Ex: 2015">
+            <i class="fa-solid fa-calendar-check"></i>
         </div>
         <div class="form-group">
-            <label>Você aceita receber conteúdo e participar do grupo de WhatsApp do Retiro da Renovação da Consagração?</label>
+            <label>Confirma seu interesse em fazer o Retiro?</label>
             <div class="consentimento">
                 <input type="radio" id="consentimento_sim" name="consentimento" value="Sim" required>
                 <label for="consentimento_sim">Sim</label>
@@ -149,145 +205,192 @@
                 <label for="consentimento_nao">Não</label>
             </div>
         </div>
-        <p class="info-text">O link para participar do retiro está na próxima página, depois que você clicar no botão "Cadastrar" abaixo.</p>
+        <p style="text-align: center; margin-top: 30px;">Assista ao vídeo abaixo para saber os próximos passos:</p>
+        <div class="video-container">
+            <iframe width="560" height="315" src="COLE_O_LINK_DO_SEU_VIDEO_AQUI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <p class="info-text">Após clicar em "Cadastrar", você será redirecionado para o grupo de WhatsApp.</p>
         <button type="submit">Cadastrar</button>
         <p id="loading" style="display: none;">Enviando...</p>
     </form>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
 <script>
     const appScriptURL = 'https://script.google.com/macros/s/AKfycbz--eN0YF9kpr5xXrOGc15R6qVf-NFBm2YXdiqZrMVryNCIPFFns2bzfzq7S2Pdsvo4aw/exec';
 
     const paises = {
-        'Anguila': '+1', 'Antígua e Barbuda': '+1', 'Bahamas': '+1', 'Barbados': '+1', 'Bermudas': '+1', 'Canadá': '+1', 'Dominica': '+1', 'Estados Unidos': '+1', 'Granada': '+1', 'Guam': '+1', 'Ilhas Caimã': '+1', 'Ilhas Marianas do Norte': '+1', 'Ilhas Virgens Americanas': '+1', 'Ilhas Virgens Britânicas': '+1', 'Jamaica': '+1', 'Monserrate': '+1', 'Porto Rico': '+1', 'República Dominicana': '+1', 'Samoa Americana': '+1', 'Santa Lúcia': '+1', 'São Cristóvão e Neves': '+1', 'São Martinho': '+1', 'São Vicente e Granadinas': '+1', 'Trindade e Tobago': '+1', 'Turcas e Caicos': '+1', 'Egipto': '+20', 'Sudão do Sul': '+211', 'Marrocos': '+212', 'Saara Ocidental': '+212', 'Argélia': '+213', 'Tunísia': '+216', 'Líbia': '+218', 'Gâmbia': '+220', 'Senegal': '+221', 'Mauritânia': '+222', 'Mali': '+223', 'Guiné': '+224', 'Costa do Marfim': '+225', 'Burquina Fasso': '+226', 'Níger': '+227', 'Togo': '+228', 'Benim': '+229', 'Maurícia': '+230', 'Libéria': '+231', 'Serra Leoa': '+232', 'Gana': '+233', 'Nigéria': '+234', 'Chade': '+235', 'República Centro-Africana': '+236', 'Camarões': '+237', 'Cabo Verde': '+238', 'São Tomé e Príncipe': '+239', 'Guiné Equatorial': '+240', 'Gabão': '+241', 'Congo-Brazavile': '+242', 'Congo-Quinxassa': '+243', 'Angola': '+244', 'Guiné-Bissau': '+245', 'Território Britânico do Oceano Índico': '+246', 'Ascensão': '+247', 'Seicheles': '+248', 'Sudão': '+249', 'Ruanda': '+250', 'Etiópia': '+251', 'Somália': '+252', 'Djibuti': '+253', 'Quênia': '+254', 'Tanzânia': '+255', 'Uganda': '+256', 'Burundi': '+257', 'Moçambique': '+258', 'Zâmbia': '+260', 'Madagascar': '+261', 'Maiote': '+262', 'Reunião': '+262', 'Zimbábue': '+263', 'Namíbia': '+264', 'Maláui': '+265', 'Lesoto': '+266', 'Botsuana': '+267', 'Essuatíni': '+268', 'Comores': '+269', 'África do Sul': '+27', 'Santa Helena': '+290', 'Tristão da Cunha': '+290', 'Eritreia': '+291', 'Aruba': '+297', 'Ilhas Féroe': '+298', 'Groenlândia': '+299', 'Grécia': '+30', 'Países Baixos': '+31', 'Bélgica': '+32', 'França': '+33', 'Espanha': '+34', 'Gibraltar': '+350', 'Portugal': '+351', 'Luxemburgo': '+352', 'Irlanda': '+353', 'Islândia': '+354', 'Albânia': '+355', 'Malta': '+356', 'Chipre': '+357', 'Finlândia': '+358', 'Bulgária': '+359', 'Hungria': '+36', 'Lituânia': '+370', 'Letônia': '+371', 'Estónia': '+372', 'Moldávia': '+373', 'Armênia': '+374', 'Bielorrússia': '+375', 'Andorra': '+376', 'Mônaco': '+377', 'São Marinho': '+378', 'Vaticano': '+379', 'Ucrânia': '+380', 'Sérvia': '+381', 'Montenegro': '+382', 'Kosovo': '+383', 'Croácia': '+385', 'Eslovénia': '+386', 'Bósnia e Herzegovina': '+387', 'Macedônia do Norte': '+389', 'Itália': '+39', 'Romênia': '+40', 'Suíça': '+41', 'Tchéquia': '+420', 'Eslováquia': '+421', 'Liechtenstein': '+423', 'Áustria': '+43', 'Reino Unido': '+44', 'Dinamarca': '+45', 'Suécia': '+46', 'Noruega': '+47', 'Polônia': '+48', 'Alemanha': '+49', 'Ilhas Malvinas': '+500', 'Ilhas Geórgia do Sul e Sandwich do Sul': '+500', 'Belize': '+501', 'Guatemala': '+502', 'El Salvador': '+503', 'Honduras': '+504', 'Nicarágua': '+505', 'Costa Rica': '+506', 'Panamá': '+507', 'São Pedro e Miquelão': '+508', 'Haiti': '+509', 'Peru': '+51', 'México': '+52', 'Cuba': '+53', 'Argentina': '+54', 'Brasil': '+55', 'Chile': '+56', 'Colômbia': '+57', 'Venezuela': '+58', 'Guadalupe': '+590', 'São Bartolomeu': '+590', 'São Martinho': '+590', 'Bolívia': '+591', 'Guiana': '+592', 'Equador': '+593', 'Guiana Francesa': '+594', 'Paraguai': '+595', 'Martinica': '+596', 'Suriname': '+597', 'Uruguai': '+598', 'Bonaire': '+599', 'Curaçao': '+599', 'Saba': '+599', 'Santo Eustáquio': '+599', 'Malásia': '+60', 'Austrália': '+61', 'Ilha Christmas': '+61', 'Ilhas Cocos': '+61', 'Indonésia': '+62', 'Filipinas': '+63', 'Nova Zelândia': '+64', 'Ilhas Pitcairn': '+64', 'Singapura': '+65', 'Tailândia': '+66', 'Timor-Leste': '+670', 'Ilha Norfolque': '+672', 'Território Antártico Australiano': '+672', 'Brunei': '+673', 'Nauru': '+674', 'Papua-Nova Guiné': '+675', 'Tonga': '+676', 'Ilhas Salomão': '+677', 'Vanuatu': '+678', 'Fiji': '+679', 'Palau': '+680', 'Wallis e Futuna': '+681', 'Ilhas Cook': '+682', 'Niue': '+683', 'Samoa': '+685', 'Quiribáti': '+686', 'Nova Caledônia': '+687', 'Tuvalu': '+688', 'Polinésia Francesa': '+689', 'Toquelau': '+690', 'Estados Federados da Micronésia': '+691', 'Ilhas Marshall': '+692', 'Cazaquistão': '+7', 'Rússia': '+7', 'Japão': '+81', 'Coreia do Sul': '+82', 'Vietnã': '+84', 'Coreia do Norte': '+850', 'Hong Kong': '+852', 'Macau': '+853', 'Camboja': '+855', 'Laos': '+856', 'China': '+86', 'Bangladexe': '+880', 'Taiwan': '+886', 'Turquia': '+90', 'Índia': '+91', 'Paquistão': '+92', 'Afeganistão': '+93', 'Seri Lanca': '+94', 'Mianmar': '+95', 'Maldivas': '+960', 'Líbano': '+961', 'Jordânia': '+962', 'Síria': '+963', 'Iraque': '+964', 'Kuwait': '+965', 'Arábia Saudita': '+966', 'Iêmen': '+967', 'Omã': '+968', 'Palestina': '+970', 'Emirados Árabes Unidos': '+971', 'Israel': '+972', 'Barém': '+973', 'Catar': '+974', 'Butão': '+975', 'Mongólia': '+976', 'Nepal': '+977', 'Irã': '+98', 'Tajiquistão': '+992', 'Turcomenistão': '+993', 'Azerbaijão': '+994', 'Geórgia': '+995', 'Quirguistão': '+996', 'Uzbequistão': '+998'
+        'Anguila': '+1', 'Antígua e Barbuda': '+1', 'Bahamas': '+1', 'Barbados': '+1', 'Bermudas': '+1', 'Canadá': '+1', 'Dominica': '+1', 'Estados Unidos': '+1', 'Granada': '+1', 'Guam': '+1', 'Ilhas Caimã': '+1', 'Ilhas Marianas do Norte': '+1', 'Ilhas Virgens Americanas': '+1', 'Ilhas Virgens Britânicas': '+1', 'Jamaica': '+1', 'Monserrate': '+1', 'Porto Rico': '+1', 'República Dominicana': '+1', 'Samoa Americana': '+1', 'Santa Lúcia': '+1', 'São Cristóvão e Neves': '+1', 'São Martinho': '+1', 'São Vicente e Granadinas': '+1', 'Trindade e Tobago': '+1', 'Turcas e Caicos': '+1', 'Egipto': '+20', 'Sudão do Sul': '+211', 'Marrocos': '+212', 'Saara Ocidental': '+212', 'Argélia': '+213', 'Tunísia': '+216', 'Líbia': '+218', 'Gâmbia': '+220', 'Senegal': '+221', 'Mauritânia': '+222', 'Mali': '+223', 'Guiné': '+224', 'Costa do Marfim': '+225', 'Burquina Fasso': '+226', 'Níger': '+227', 'Togo': '+228', 'Benim': '+229', 'Maurícia': '+230', 'Libéria': '+231', 'Serra Leoa': '+232', 'Gana': '+233', 'Nigéria': '+234', 'Chade': '+235', 'República Centro-Africana': '+236', 'Camarões': '+237', 'Cabo Verde': '+238', 'São Tomé e Príncipe': '+239', 'Guiné Equatorial': '+240', 'Gabão': '+241', 'Congo-Brazavile': '+242', 'Congo-Quinxassa': '+243', 'Angola': '+244', 'Guiné-Bissau': '+245', 'Território Britânico do Oceano Índico': '+246', 'Ascensão': '+247', 'Seicheles': '+248', 'Sudão': '+249', 'Ruanda': '+250', 'Etiópia': '+251', 'Somália': '+252', 'Djibuti': '+253', 'Quênia': '+254', 'Tanzânia': '+255', 'Uganda': '+256', 'Burundi': '+257', 'Moçambique': '+258', 'Zâmbia': '+260', 'Madagascar': '+261', 'Maiote': '+262', 'Reunião': '+262', 'Zimbábue': '+263', 'Namíbia': '+264', 'Maláui': '+265', 'Lesoto': '+266', 'Botsuana': '+267', 'Essuatíni': '+268', 'Comores': '+269', 'África do Sul': '+27', 'Santa Helena': '+290', 'Tristão da Cunha': '+290', 'Eritreia': '+291', 'Aruba': '+297', 'Ilhas Féroe': '+298', 'Groenlândia': '+299', 'Grécia': '+30', 'Países Baixos': '+31', 'Bélgica': '+32', 'França': '+33', 'Espanha': '+34', 'Gibraltar': '+350', 'Portugal': '+351', 'Luxemburgo': '+352', 'Irlanda': '+353', 'Islândia': '+354', 'Albânia': '+355', 'Malta': '+356', 'Chipre': '+357', 'Finlândia': '+358', 'Ilhas Åland': '+358', 'Bulgária': '+359', 'Hungria': '+36', 'Lituânia': '+370', 'Letônia': '+371', 'Estônia': '+372', 'Moldávia': '+373', 'Armênia': '+374', 'Bielorrússia': '+375', 'Andorra': '+376', 'Mônaco': '+377', 'San Marino': '+378', 'Vaticano': '+39', 'Ucrânia': '+380', 'Sérvia': '+381', 'Montenegro': '+382', 'Kosovo': '+383', 'Croácia': '+385', 'Eslovênia': '+386', 'Bósnia e Herzegovina': '+387', 'Macedônia do Norte': '+389', 'Itália': '+39', 'Romênia': '+40', 'Suíça': '+41', 'Chéquia': '+420', 'Eslováquia': '+421', 'Listenstaine': '+423', 'Áustria': '+43', 'Reino Unido': '+44', 'Guérnesei': '+44', 'Ilha de Man': '+44', 'Jérsei': '+44', 'Dinamarca': '+45', 'Suécia': '+46', 'Noruega': '+47', 'Jan Mayen': '+47', 'Svalbard': '+47', 'Polônia': '+48', 'Alemanha': '+49', 'Belize': '+501', 'Guatemala': '+502', 'El Salvador': '+503', 'Honduras': '+504', 'Nicarágua': '+505', 'Costa Rica': '+506', 'Panamá': '+507', 'São Pedro e Miquelão': '+508', 'Haiti': '+509', 'Peru': '+51', 'México': '+52', 'Cuba': '+53', 'Argentina': '+54', 'Brasil': '+55', 'Chile': '+56', 'Colômbia': '+57', 'Venezuela': '+58', 'Bolívia': '+591', 'Guiana': '+592', 'Equador': '+593', 'Guiana Francesa': '+594', 'Paraguai': '+595', 'Martinica': '+596', 'Suriname': '+597', 'Uruguai': '+598', 'Antilhas Holandesas': '+599', 'Malásia': '+60', 'Austrália': '+61', 'Ilha Christmas': '+61', 'Ilhas Cocos (Keeling)': '+61', 'Indonésia': '+62', 'Filipinas': '+63', 'Nova Zelândia': '+64', 'Ilhas Pitcairn': '+64', 'Singapura': '+65', 'Tailândia': '+66', 'Timor-Leste': '+670', 'Antártida': '+672', 'Ilha Norfolk': '+672', 'Brunei': '+673', 'Nauru': '+674', 'Papua-Nova Guiné': '+675', 'Tonga': '+676', 'Ilhas Salomão': '+677', 'Vanuatu': '+678', 'Fiji': '+679', 'Palau': '+680', 'Wallis e Futuna': '+681', 'Ilhas Cook': '+682', 'Niue': '+683', 'Samoa': '+685', 'Quiribati': '+686', 'Nova Caledônia': '+687', 'Tuvalu': '+688', 'Polinésia Francesa': '+689', 'Toquelau': '+690', 'Micronésia': '+691', 'Ilhas Marshall': '+692', 'Rússia': '+7', 'Cazaquistão': '+7', 'Japão': '+81', 'Coreia do Sul': '+82', 'Vietnã': '+84', 'Coreia do Norte': '+850', 'Hong Kong': '+852', 'Macau': '+853', 'Camboja': '+855', 'Laos': '+856', 'China': '+86', 'Bangladesh': '+880', 'Taiwan': '+886', 'Turquia': '+90', 'Chipre do Norte': '+90', 'Índia': '+91', 'Paquistão': '+92', 'Afeganistão': '+93', 'Sri Lanka': '+94', 'Mianmar': '+95', 'Maldivas': '+960', 'Líbano': '+961', 'Jordânia': '+962', 'Síria': '+963', 'Iraque': '+964', 'Kuwait': '+965', 'Arábia Saudita': '+966', 'Iêmen': '+967', 'Omã': '+968', 'Palestina': '+970', 'Emirados Árabes Unidos': '+971', 'Israel': '+972', 'Bahrein': '+973', 'Catar': '+974', 'Butão': '+975', 'Mongólia': '+976', 'Nepal': '+977', 'Irã': '+98', 'Tajiquistão': '+992', 'Turcomenistão': '+993', 'Azerbaijão': '+994', 'Geórgia': '+995', 'Abecásia': '+995', 'Ossétia do Sul': '+995', 'Quirguistão': '+996', 'Uzbequistão': '+998'
+    };
+    
+    // Adiciona as opções de países ao campo de seleção
+    const paisSelect = document.getElementById('pais');
+    for (const [pais, codigo] of Object.entries(paises).sort()) {
+        const option = document.createElement('option');
+        option.value = codigo;
+        option.textContent = pais;
+        paisSelect.appendChild(option);
+    }
 
-    };
+    const telefoneInput = document.getElementById('telefone');
+    let phoneMask = null;
 
-    // Adiciona as opções de países ao campo de seleção
-    const paisSelect = document.getElementById('pais');
-    for (const [pais, codigo] of Object.entries(paises).sort()) {
-        const option = document.createElement('option');
-       	option.value = pais; // Alterado para o nome do país
-        option.setAttribute('data-codigo', codigo); // Armazena o código em um atributo
-        option.textContent = pais;
-        paisSelect.appendChild(option);
-    }
+    // Mascaras de telefone
+    const maskOptions = {
+        'Brasil': { mask: '(00) 00 00000-0000', placeholder: '(+55) __ _____-____' },
+        'Estados Unidos': { mask: '(0) 0 000 000-0000', placeholder: '(+1) ___ ___-____' },
+        'Canadá': { mask: '(0) 000 000-0000', placeholder: '(+1) ___ ___-____' },
+        'Portugal': { mask: '(000) 000 000 000', placeholder: '(+351) ___ ___ ___' },
+        'França': { mask: '(00) 0 00 00 00 00', placeholder: '(+33) _ __ __ __ __' },
+        'Reino Unido': { mask: '(00) 00 0000 000000', placeholder: '(+44) ____ ___ ___' }
+    };
 
-    const telefoneInput = document.getElementById('telefone');
-    let phoneMask = null;
+    paisSelect.addEventListener('change', function() {
+        const nomePais = this.options[this.selectedIndex].text;
+        const codigo = this.value;
+        
+        // Atualiza a máscara de telefone
+        if (phoneMask) {
+            phoneMask.destroy();
+        }
+        if (nomePais && maskOptions[nomePais]) {
+            telefoneInput.placeholder = maskOptions[nomePais].placeholder;
+            phoneMask = IMask(telefoneInput, { mask: maskOptions[nomePais].mask, lazy: false });
+        } else {
+            telefoneInput.placeholder = 'Digite seu telefone';
+            phoneMask = null;
+        }
+        
+        if(nomePais === 'Brasil') {
+            telefoneInput.value = '55';
+        } else {
+            telefoneInput.value = codigo;
+        }
 
-    // Mascaras de telefone
-    const maskOptions = {
-        'Brasil': { mask: '(55) 00 00000-0000', placeholder: '(+55) __ _____-____' },
-        'Estados Unidos': { mask: '(0) 000 000-0000', placeholder: '(+1) ___ ___-____' },
-        'Canadá': { mask: '(0) 000 000-0000', placeholder: '(+1) ___ ___-____' },
-        'Portugal': { mask: '000 000 000 000', placeholder: '(+351) ___ ___ ___' },
-        'França': { mask: '0 0 00 00 00 00', placeholder: '(+33) _ __ __ __ __' },
-        'Reino Unido': { mask: '00 0000 000 000', placeholder: '(+44) ____ ___ ___' }
-    };
+        // Altera dinamicamente o campo de estado
+        const estadoWrapper = document.getElementById('estado').parentNode;
+        const currentEstadoField = document.getElementById('estado');
 
-    paisSelect.addEventListener('change', function() {
-        const nomePais = this.options[this.selectedIndex].text;
-        const codigo = this.options[this.selectedIndex].getAttribute('data-codigo');
-        
-        if (phoneMask) {
-            phoneMask.destroy();
-        }
+        if (nomePais === 'Brasil') {
+            if (currentEstadoField.tagName !== 'SELECT') {
+                const select = document.createElement('select');
+                select.id = 'estado';
+                select.name = 'estado';
+                select.required = true;
 
-        if (nomePais && maskOptions[nomePais]) {
-            telefoneInput.placeholder = maskOptions[nomePais].placeholder;
-            phoneMask = IMask(telefoneInput, { mask: maskOptions[nomePais].mask, lazy: false });
-        } else {
-            telefoneInput.placeholder = 'Digite seu telefone';
-            phoneMask = null;
-        }
-        
-        // Remove a máscara de +55 para o Brasil, pois o IMask irá lidar com isso.
-        if(nomePais === 'Brasil') {
-            telefoneInput.value = '';
-        } else {
-            telefoneInput.value = codigo;
-        }
-        
-    });
+                const estados = ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins"];
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Selecione seu estado";
+                select.appendChild(defaultOption);
 
-    function loadConfig() {
-        fetch(appScriptURL)
-            .then(response => response.json())
-            .then(config => {
-                document.getElementById('pageTitle').textContent = config.title;
-                document.getElementById('formTitle').textContent = config.title;
-                const observacaoElement = document.getElementById('observacao');
-                observacaoElement.innerHTML = config.observacao;
-                const headerImageElement = document.getElementById('headerImage');
-                if (config.imageUrl) {
-                    headerImageElement.src = config.imageUrl;
-                    headerImageElement.style.display = 'block';
-                } else {
-                    headerImageElement.style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao carregar as configurações:', error);
-                document.getElementById('formTitle').textContent = 'Erro ao carregar o formulário.';
-            });
-    }
+                estados.sort().forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado;
+                    option.textContent = estado;
+                    select.appendChild(option);
+                });
 
-    window.onload = loadConfig;
+                estadoWrapper.replaceChild(select, currentEstadoField);
+            }
+        } else {
+            if (currentEstadoField.tagName !== 'INPUT') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'estado';
+                input.name = 'estado';
+                input.required = true;
+                
+                estadoWrapper.replaceChild(input, currentEstadoField);
+            }
+        }
+    });
 
-    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    function loadConfig() {
+        fetch(appScriptURL)
+            .then(response => response.json())
+            .then(config => {
+                document.getElementById('pageTitle').textContent = config.title;
+                document.getElementById('formTitle').textContent = config.title;
+                const observacaoElement = document.getElementById('observacao');
+                observacaoElement.innerHTML = config.observacao;
+                const headerImageElement = document.getElementById('headerImage');
+                if (config.imageUrl) {
+                    headerImageElement.src = config.imageUrl;
+                    headerImageElement.style.display = 'block';
+                } else {
+                    headerImageElement.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar as configurações:', error);
+                document.getElementById('formTitle').textContent = 'Erro ao carregar o formulário.';
+            });
+    }
 
-        // Validar campos obrigatórios
-        const nome = document.getElementById('nome').value;
-        const email = document.getElementById('email').value;
-        const estado = document.getElementById('estado').value;
-        const cidade = document.getElementById('cidade').value;
-        const pais = paisSelect.value;
-        const telefone = telefoneInput.value;
-        const consentimento = document.querySelector('input[name="consentimento"]:checked');
+    window.onload = loadConfig;
 
-        if (!nome || !email || !estado || !cidade || !pais || !telefone || !consentimento) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
-            return;
-        }
+    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-        // Validar telefone do Brasil
-        const paisSelecionado = paisSelect.options[paisSelect.selectedIndex].text;
-        if (paisSelecionado === 'Brasil') {
-            const telefoneCompleto = telefoneInput.value.replace(/\D/g, '');
-            if (telefoneCompleto.length !== 13) {
-                document.getElementById('telefoneValidation').textContent = 'O número de telefone deve ter 11 dígitos (DDD + 9 + 8 dígitos).';
-                document.getElementById('telefoneValidation').style.display = 'block';
-                return;
-            }
-        }
-        document.getElementById('telefoneValidation').style.display = 'none';
+        // Validar campos obrigatórios
+        const nome = document.getElementById('nome').value;
+        const email = document.getElementById('email').value;
+        const estado = document.getElementById('estado').value;
+        const cidade = document.getElementById('cidade').value;
+        const pais = paisSelect.value;
+        const telefone = telefoneInput.value;
+        const consentimento = document.querySelector('input[name="consentimento"]:checked');
 
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = new URLSearchParams(formData);
-        const loadingText = document.getElementById('loading');
-        loadingText.style.display = 'block';
+        if (!nome || !email || !estado || !cidade || !pais || !telefone || !consentimento) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
 
-        fetch(appScriptURL, {
-            method: 'POST',
-            body: data
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.result === 'success') {
-                window.location.href = 'confirmacao.html?link=' + encodeURIComponent(result.whatsappLink);
-            } else {
-                loadingText.textContent = 'Erro ao enviar dados. Tente novamente.';
-                loadingText.style.color = 'red';
-            }
-        })
-        .catch(error => {
-            loadingText.textContent = 'Erro de conexão. Tente novamente.';
-            loadingText.style.color = 'red';
-        });
-    });
+        // Validar telefone do Brasil
+        const paisSelecionado = paisSelect.options[paisSelect.selectedIndex].text;
+        if (paisSelecionado === 'Brasil') {
+            const telefoneCompleto = telefoneInput.value.replace(/\D/g, '');
+            if (telefoneCompleto.length < 12 || telefoneCompleto.length > 13) { // 55 11 987654321
+                alert('O número de telefone brasileiro deve ter 12 ou 13 dígitos (Ex: 5511987654321).');
+                return;
+            }
+        }
+        document.getElementById('telefoneValidation').style.display = 'none';
+
+        const data = new URLSearchParams();
+        data.append('nome', nome);
+        data.append('email', email);
+        data.append('pais', paisSelecionado);
+        data.append('estado', estado);
+        data.append('cidade', cidade);
+        data.append('telefone', telefone);
+        data.append('anoConsagracao', document.getElementById('anoConsagracao').value);
+        data.append('consentimento', consentimento.value);
+
+        const loadingText = document.getElementById('loading');
+        loadingText.style.display = 'block';
+
+        fetch(appScriptURL, {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.result === 'success') {
+                // Redireciona diretamente para o link do WhatsApp
+                window.location.href = result.whatsappLink;
+            } else {
+                loadingText.textContent = 'Erro ao enviar dados. Tente novamente.';
+                loadingText.style.color = 'red';
+            }
+        })
+        .catch(error => {
+            loadingText.textContent = 'Erro de conexão. Tente novamente.';
+            loadingText.style.color = 'red';
+        });
+    });
 </script>
 </body>
 </html>
