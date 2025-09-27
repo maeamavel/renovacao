@@ -211,10 +211,12 @@
             <div id="telefoneValidation" class="validation-message" style="display: none;"></div>
         </div>
         <div class="form-group">
-            <label for="anoConsagracao">Caso se lembre, qual foi o ano que se Consagrou a Maria?</label>
-            <div class="input-wrapper">
-                <input type="text" id="anoConsagracao" name="anoConsagracao" placeholder="Ex: 2015">
-                <i class="fa-solid fa-calendar-check"></i>
+            <label>Você já fez a Consagração Total a Nossa Senhora?</label>
+            <div class="consentimento">
+                <input type="radio" id="consagracao_sim" name="anoConsagracao" value="Sim" required>
+                <label for="consagracao_sim">Sim</label>
+                <input type="radio" id="consagracao_nao" name="anoConsagracao" value="Não" required>
+                <label for="consagracao_nao">Não</label>
             </div>
         </div>
         <div class="form-group">
@@ -368,18 +370,26 @@
         const pais = paisSelect.value;
         const telefone = telefoneInput.value;
         const consentimento = document.querySelector('input[name="consentimento"]:checked');
+        const consagracao = document.querySelector('input[name="anoConsagracao"]:checked');
 
-        if (!nome || !email || !estado || !cidade || !pais || !telefone || !consentimento) {
+        if (!nome || !email || !estado || !cidade || !pais || !telefone || !consentimento || !consagracao) {
             alert('Por favor, preencha todos os campos obrigatórios.');
             return;
         }
 
-        // Validar telefone do Brasil
+        // Validação do Telefone
         const paisSelecionado = paisSelect.options[paisSelect.selectedIndex].text;
+        const telefoneLimpo = telefone.replace(/\D/g, '');
+        const codigoLimpo = pais.replace(/\D/g, '');
+
         if (paisSelecionado === 'Brasil') {
-            const telefoneCompleto = telefoneInput.value.replace(/\D/g, '');
-            if (telefoneCompleto.length < 12 || telefoneCompleto.length > 13) { // 55 11 987654321
+            if (telefoneLimpo.length < 12 || telefoneLimpo.length > 13) { // 55 11 987654321
                 alert('O número de telefone brasileiro deve ter 12 ou 13 dígitos (Ex: 5511987654321).');
+                return;
+            }
+        } else {
+            if (telefoneLimpo.length <= codigoLimpo.length) {
+                alert('Por favor, insira seu número de telefone completo após o código do país.');
                 return;
             }
         }
@@ -392,7 +402,7 @@
         data.append('estado', estado);
         data.append('cidade', cidade);
         data.append('telefone', telefone);
-        data.append('anoConsagracao', document.getElementById('anoConsagracao').value);
+        data.append('anoConsagracao', consagracao.value);
         data.append('consentimento', consentimento.value);
 
         const loadingText = document.getElementById('loading');
